@@ -1,0 +1,37 @@
+@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap");
+@import "@heroui/styles";
+
+@theme inline {
+  --font-display: "Playfair Display", serif;
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+
+  --color-autogold-50: #fdf8ed;
+  --color-autogold-100: #f9edcc;
+  --color-autogold-200: #f2d88f;
+  --color-autogold-300: #eac151;
+  --color-autogold-400: #e2ab27;
+  --color-autogold-500: #d49417;
+  --color-autogold-600: #c47f10;
+  --color-autogold-700: #a66a11;
+  --color-autogold-800: #875a16;
+  --color-autogold-900: #6f4d19;
+}
+
+[data-theme="dark"] {
+  --accent: oklch(0.72 0.15 78.5);
+  --accent-foreground: oklch(0.12 0.01 285);
+}
+
+[data-theme="light"] {
+  --accent: oklch(0.65 0.18 72.5);
+  --accent-foreground: oklch(0.98 0 0);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display);
+}
+
+html {
+  scroll-behavior: smooth;
+}
