@@ -50,7 +50,7 @@ export default function NewsletterSection() {
               </div>
               <button
                 type="submit"
-                className="inline-flex items-center gap-2 rounded-xl bg-[var(--accent)] px-5 py-3 text-sm font-semibold text-[var(--accent-foreground)] transition-opacity hover:opacity-90"
+                className="inline-flex items-center gap-2 rounded-xl bg-[var(--accent)] px-5 py-3 text-sm font-semibold text-[var(--accent-foreground)] transition-opacity hover:opacity-90 cursor-pointer"
               >
                 {submitted ? <Check className="size-4" /> : <ArrowRight className="size-4" />}
                 {submitted ? "Subscribed" : "Subscribe"}

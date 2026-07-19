@@ -80,7 +80,7 @@ export default function Navbar() {
           {session ? (
             <button
               onClick={handleSignOut}
-              className="hidden items-center gap-1.5 rounded-xl px-3 py-2 text-sm font-medium text-[var(--muted)] transition-colors hover:bg-[var(--surface-hover)] hover:text-[var(--foreground)] md:flex"
+              className="hidden items-center gap-1.5 rounded-xl px-3 py-2 text-sm font-medium text-[var(--muted)] transition-colors hover:bg-[var(--surface-hover)] hover:text-[var(--foreground)] md:flex cursor-pointer"
             >
               <LogOut className="size-4" />
               Sign Out
@@ -135,7 +135,7 @@ export default function Navbar() {
                   handleSignOut();
                   setMobileOpen(false);
                 }}
-                className="flex items-center gap-2 rounded-xl px-3 py-2.5 text-sm font-medium text-[var(--muted)] transition-colors hover:bg-[var(--surface-hover)] hover:text-[var(--foreground)]"
+                className="flex items-center gap-2 rounded-xl px-3 py-2.5 text-sm font-medium text-[var(--muted)] transition-colors hover:bg-[var(--surface-hover)] hover:text-[var(--foreground)] cursor-pointer"
               >
                 <LogOut className="size-4" />
                 Sign Out
@@ -144,7 +144,7 @@ export default function Navbar() {
               <Link
                 href="/login"
                 onClick={() => setMobileOpen(false)}
-                className="flex items-center gap-2 rounded-xl bg-[var(--accent)] px-3 py-2.5 text-sm font-semibold text-[var(--accent-foreground)]"
+                className="flex items-center gap-2 rounded-xl bg-[var(--accent)] px-3 py-2.5 text-sm font-semibold text-[var(--accent-foreground)] cursor-pointer"
               >
                 Sign In
               </Link>
