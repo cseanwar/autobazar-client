@@ -60,7 +60,10 @@ export default function RegisterPage() {
   async function handleGoogleLogin() {
     setError("");
     try {
-      await authClient.signIn.social({ provider: "google" });
+      await authClient.signIn.social({
+        provider: "google",
+        callbackURL: window.location.origin,
+      });
     } catch {
       setError("Failed to sign in with Google");
     }
