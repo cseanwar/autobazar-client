@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useCallback } from "react";
+import { useSearchParams } from "next/navigation";
 import { useItems } from "@/hooks/useItems";
 import CarGrid from "@/components/listings/CarGrid";
 import SearchBar from "@/components/listings/SearchBar";
@@ -9,12 +10,32 @@ import SortDropdown from "@/components/listings/SortDropdown";
 import Pagination from "@/components/listings/Pagination";
 import { CarFront } from "lucide-react";
 
+const BODY_TYPE_LABELS: Record<string, string> = {
+  sedan: "Sedan",
+  suv: "SUV",
+  sports: "Sports",
+  electric: "Electric",
+  luxury: "Luxury",
+  "off-road": "Off-Road",
+  truck: "Truck",
+};
+
 export default function ListingsPage() {
+  const searchParams = useSearchParams();
+  const urlBodyType = searchParams.get("bodyType") || undefined;
+  const urlFuelType = searchParams.get("fuelType") || undefined;
+
   const [search, setSearch] = useState("");
   const [filters, setFilters] = useState<Filters>(defaultFilters);
   const [sortBy, setSortBy] = useState("createdAt");
   const [sortOrder, setSortOrder] = useState("desc");
   const [page, setPage] = useState(1);
+
+  const categoryLabel = urlBodyType
+    ? BODY_TYPE_LABELS[urlBodyType]
+    : urlFuelType === "electric"
+      ? "Electric"
+      : undefined;
 
   const { data, isLoading } = useItems({
     page,
@@ -23,8 +44,9 @@ export default function ListingsPage() {
     make: filters.make || undefined,
     minPrice: filters.minPrice ? Number(filters.minPrice) : undefined,
     maxPrice: filters.maxPrice ? Number(filters.maxPrice) : undefined,
-    fuelType: filters.fuelType || undefined,
+    fuelType: urlFuelType || filters.fuelType || undefined,
     condition: filters.condition || undefined,
+    bodyType: urlBodyType,
     sortBy,
     sortOrder,
   });
@@ -49,11 +71,16 @@ export default function ListingsPage() {
           <div className="flex items-center gap-3">
             <CarFront className="size-6 text-[var(--accent)]" />
             <h1 className="font-display text-2xl font-bold tracking-tight sm:text-3xl">
-              Browse Cars
+              {categoryLabel ? `${categoryLabel} Cars` : "Browse Cars"}
             </h1>
           </div>
           <p className="mt-1 text-sm text-[var(--muted)]">
             {data ? `${data.total} cars found` : "Search our inventory"}
+            {categoryLabel && (
+              <span className="ml-2 inline-flex items-center gap-1 rounded-full border border-[var(--accent)]/30 bg-[var(--accent)]/10 px-2.5 py-0.5 text-xs text-[var(--accent)]">
+                {categoryLabel}
+              </span>
+            )}
           </p>
         </div>
       </div>

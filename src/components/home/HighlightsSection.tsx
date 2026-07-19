@@ -1,47 +1,57 @@
-import Image from "next/image";
-import Link from "next/link";
-import { MapPin, Fuel, Gauge, ArrowRight } from "lucide-react";
+"use client";
 
-const featured = [
-  {
-    image: "https://images.unsplash.com/photo-1617469767053-d3b523a0b982?w=600&q=80",
-    title: "2024 Porsche 911 Carrera",
-    price: "$129,900",
-    location: "Los Angeles, CA",
-    fuel: "Gasoline",
-    mileage: "3,200 mi",
-    href: "/listings/1",
-  },
-  {
-    image: "https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?w=600&q=80",
-    title: "2023 Mercedes-Benz S-Class",
-    price: "$94,500",
-    location: "New York, NY",
-    fuel: "Hybrid",
-    mileage: "8,100 mi",
-    href: "/listings/2",
-  },
-  {
-    image: "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?w=600&q=80",
-    title: "2024 BMW M4 Competition",
-    price: "$82,300",
-    location: "Miami, FL",
-    fuel: "Gasoline",
-    mileage: "1,800 mi",
-    href: "/listings/3",
-  },
-  {
-    image: "https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=600&q=80",
-    title: "2023 Audi RS e-tron GT",
-    price: "$108,700",
-    location: "San Francisco, CA",
-    fuel: "Electric",
-    mileage: "5,400 mi",
-    href: "/listings/4",
-  },
-];
+import Link from "next/link";
+import { MapPin, Fuel, Gauge, ArrowRight, Loader2 } from "lucide-react";
+import { useItems } from "@/hooks/useItems";
+
+function formatPrice(price: number) {
+  return new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
+    maximumFractionDigits: 0,
+  }).format(price);
+}
+
+function formatMileage(mileage: number) {
+  return `${mileage.toLocaleString()} mi`;
+}
+
+function fuelLabel(fuelType: string) {
+  const labels: Record<string, string> = {
+    gasoline: "Gasoline",
+    diesel: "Diesel",
+    electric: "Electric",
+    hybrid: "Hybrid",
+  };
+  return labels[fuelType] || fuelType;
+}
+
+function SkeletonCard() {
+  return (
+    <div className="overflow-hidden rounded-2xl border border-[var(--border)] bg-[var(--surface)]">
+      <div className="aspect-[4/3] bg-[var(--surface-secondary)] animate-pulse" />
+      <div className="p-4 space-y-3">
+        <div className="h-4 w-3/4 rounded bg-[var(--surface-secondary)] animate-pulse" />
+        <div className="flex gap-3">
+          <div className="h-3 w-20 rounded bg-[var(--surface-secondary)] animate-pulse" />
+          <div className="h-3 w-16 rounded bg-[var(--surface-secondary)] animate-pulse" />
+          <div className="h-3 w-16 rounded bg-[var(--surface-secondary)] animate-pulse" />
+        </div>
+      </div>
+    </div>
+  );
+}
 
 export default function HighlightsSection() {
+  const { data, isLoading } = useItems({
+    page: 1,
+    limit: 4,
+    sortBy: "createdAt",
+    sortOrder: "desc",
+  });
+
+  const items = data?.items || [];
+
   return (
     <section className="border-t border-[var(--border)] bg-[var(--surface)] py-20">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -51,7 +61,7 @@ export default function HighlightsSection() {
               Featured Listings
             </span>
             <h2 className="font-display text-3xl font-bold tracking-tight sm:text-4xl">
-              Top Picks This Week
+              Latest Arrivals
             </h2>
           </div>
           <Link
@@ -63,43 +73,56 @@ export default function HighlightsSection() {
         </div>
 
         <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {featured.map((car) => (
-            <Link
-              key={car.title}
-              href={car.href}
-              className="group overflow-hidden rounded-2xl border border-[var(--border)] bg-[var(--surface)] transition-all hover:border-[var(--accent)]/30 hover:shadow-[var(--surface-shadow)]"
-            >
-              <div className="relative aspect-[4/3] overflow-hidden">
-                <Image
-                  src={car.image}
-                  alt={car.title}
-                  fill
-                  className="object-cover transition-transform duration-500 group-hover:scale-105"
-                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
-                <span className="absolute bottom-3 left-3 rounded-lg bg-[var(--accent)] px-3 py-1 text-sm font-bold text-[var(--accent-foreground)]">
-                  {car.price}
-                </span>
-              </div>
-              <div className="p-4">
-                <h3 className="font-semibold group-hover:text-[var(--accent)]">
-                  {car.title}
-                </h3>
-                <div className="mt-3 flex flex-wrap items-center gap-3 text-xs text-[var(--muted)]">
-                  <span className="flex items-center gap-1">
-                    <MapPin className="size-3" /> {car.location}
-                  </span>
-                  <span className="flex items-center gap-1">
-                    <Fuel className="size-3" /> {car.fuel}
-                  </span>
-                  <span className="flex items-center gap-1">
-                    <Gauge className="size-3" /> {car.mileage}
+          {isLoading ? (
+            <>
+              <SkeletonCard />
+              <SkeletonCard />
+              <SkeletonCard />
+              <SkeletonCard />
+            </>
+          ) : items.length === 0 ? (
+            <p className="col-span-full text-center text-sm text-[var(--muted)] py-12">
+              No listings yet. Be the first to list your car.
+            </p>
+          ) : (
+            items.map((car) => (
+              <Link
+                key={car._id}
+                href={`/listings/${car._id}`}
+                className="group overflow-hidden rounded-2xl border border-[var(--border)] bg-[var(--surface)] transition-all hover:border-[var(--accent)]/30 hover:shadow-[var(--surface-shadow)]"
+              >
+                <div className="relative aspect-[4/3] overflow-hidden bg-[var(--surface-secondary)]">
+                  {car.images?.[0] && (
+                    <img
+                      src={car.images[0]}
+                      alt={car.title}
+                      className="size-full object-cover transition-transform duration-500 group-hover:scale-105"
+                    />
+                  )}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
+                  <span className="absolute bottom-3 left-3 rounded-lg bg-[var(--accent)] px-3 py-1 text-sm font-bold text-[var(--accent-foreground)]">
+                    {formatPrice(car.price)}
                   </span>
                 </div>
-              </div>
-            </Link>
-          ))}
+                <div className="p-4">
+                  <h3 className="font-semibold group-hover:text-[var(--accent)]">
+                    {car.year} {car.make} {car.model}
+                  </h3>
+                  <div className="mt-3 flex flex-wrap items-center gap-3 text-xs text-[var(--muted)]">
+                    <span className="flex items-center gap-1">
+                      <MapPin className="size-3" /> {car.location}
+                    </span>
+                    <span className="flex items-center gap-1">
+                      <Fuel className="size-3" /> {fuelLabel(car.fuelType)}
+                    </span>
+                    <span className="flex items-center gap-1">
+                      <Gauge className="size-3" /> {formatMileage(car.mileage)}
+                    </span>
+                  </div>
+                </div>
+              </Link>
+            ))
+          )}
         </div>
 
         <div className="mt-6 text-center sm:hidden">

@@ -9,12 +9,12 @@ import {
 } from "lucide-react";
 
 const categories = [
-  { icon: Car, label: "Sedan", count: "2,341 cars" },
-  { icon: Truck, label: "SUV", count: "1,892 cars" },
-  { icon: Gauge, label: "Sports", count: "567 cars" },
-  { icon: Zap, label: "Electric", count: "823 cars" },
-  { icon: Crown, label: "Luxury", count: "456 cars" },
-  { icon: Mountain, label: "Off-Road", count: "334 cars" },
+  { icon: Car, label: "Sedan", href: "/listings?bodyType=sedan" },
+  { icon: Truck, label: "SUV", href: "/listings?bodyType=suv" },
+  { icon: Gauge, label: "Sports", href: "/listings?bodyType=sports" },
+  { icon: Zap, label: "Electric", href: "/listings?fuelType=electric" },
+  { icon: Crown, label: "Luxury", href: "/listings?bodyType=luxury" },
+  { icon: Mountain, label: "Off-Road", href: "/listings?bodyType=off-road" },
 ];
 
 export default function CategoriesSection() {
@@ -37,14 +37,13 @@ export default function CategoriesSection() {
           {categories.map((cat) => (
             <Link
               key={cat.label}
-              href={`/listings?category=${cat.label.toLowerCase()}`}
+              href={cat.href}
               className="group flex flex-col items-center rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-6 text-center transition-all hover:border-[var(--accent)]/30 hover:shadow-[var(--surface-shadow)]"
             >
               <div className="mb-3 flex size-12 items-center justify-center rounded-xl bg-[var(--accent)]/10 text-[var(--accent)] transition-colors group-hover:bg-[var(--accent)] group-hover:text-[var(--accent-foreground)]">
                 <cat.icon className="size-6" />
               </div>
               <h3 className="text-sm font-semibold">{cat.label}</h3>
-              <p className="mt-1 text-xs text-[var(--muted)]">{cat.count}</p>
             </Link>
           ))}
         </div>

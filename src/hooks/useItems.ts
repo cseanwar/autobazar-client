@@ -13,6 +13,7 @@ interface ItemFilters {
   maxPrice?: number;
   fuelType?: string;
   condition?: string;
+  bodyType?: string;
   sortBy?: string;
   sortOrder?: string;
 }
@@ -27,6 +28,7 @@ function buildQueryString(filters: ItemFilters): string {
   if (filters.maxPrice !== undefined) params.set("maxPrice", String(filters.maxPrice));
   if (filters.fuelType) params.set("fuelType", filters.fuelType);
   if (filters.condition) params.set("condition", filters.condition);
+  if (filters.bodyType) params.set("bodyType", filters.bodyType);
   if (filters.sortBy) params.set("sortBy", filters.sortBy);
   if (filters.sortOrder) params.set("sortOrder", filters.sortOrder);
   return params.toString();

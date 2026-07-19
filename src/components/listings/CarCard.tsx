@@ -5,8 +5,12 @@ import type { CarItem } from "@/types";
 
 const PLACEHOLDER_IMAGE = "https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=600&q=80";
 
+function fixImageUrl(url: string): string {
+  return url.replace(/^hhttps:/, "https:");
+}
+
 export default function CarCard({ item }: { item: CarItem }) {
-  const image = item.images?.[0] || PLACEHOLDER_IMAGE;
+  const image = fixImageUrl(item.images?.[0] || PLACEHOLDER_IMAGE);
 
   return (
     <Link

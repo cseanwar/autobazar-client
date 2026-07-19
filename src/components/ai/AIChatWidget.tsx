@@ -106,7 +106,7 @@ export default function AIChatWidget() {
       <button
         type="button"
         onClick={() => setOpen(true)}
-        className="fixed bottom-6 right-6 z-40 flex size-14 items-center justify-center rounded-full bg-[var(--accent)] text-[var(--accent-foreground)] shadow-lg transition-all hover:scale-105 hover:shadow-xl active:scale-95"
+        className="fixed bottom-6 right-6 z-40 flex size-14 items-center justify-center rounded-full bg-[var(--accent)] text-[var(--accent-foreground)] shadow-lg transition-all hover:scale-105 hover:shadow-xl active:scale-95 cursor-pointer"
         aria-label="Open AI chat"
       >
         <MessageSquare className="size-6" />
