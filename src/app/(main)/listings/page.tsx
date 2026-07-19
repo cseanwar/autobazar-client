@@ -34,6 +34,11 @@ export default function ListingsPage() {
     setPage(1);
   }, []);
 
+  const handleSearchChange = useCallback((value: string) => {
+    setSearch(value);
+    setPage(1);
+  }, []);
+
   const items = data?.items || [];
   const totalPages = data?.totalPages || 0;
 
@@ -62,7 +67,7 @@ export default function ListingsPage() {
           <div className="min-w-0 flex-1">
             <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
               <div className="flex-1">
-                <SearchBar value={search} onChange={setSearch} />
+                <SearchBar value={search} onChange={handleSearchChange} />
               </div>
               <div className="w-full sm:w-48">
                 <SortDropdown
