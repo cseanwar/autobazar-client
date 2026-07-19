@@ -38,6 +38,7 @@ export default function AIChatWidget() {
   const [streamingText, setStreamingText] = useState("");
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const streamingRef = useRef("");
 
   const chat = useAIChat();
 
@@ -62,6 +63,7 @@ export default function AIChatWidget() {
     const userMsg: Message = { role: "user", content: message.trim() };
     setMessages((prev) => [...prev, userMsg]);
     setInput("");
+    streamingRef.current = "";
     setStreamingText("");
 
     const history = messages.map((m) => ({
@@ -73,19 +75,17 @@ export default function AIChatWidget() {
       await chat.mutateAsync({
         message: message.trim(),
         history,
-        onChunk: (text) => setStreamingText((prev) => prev + text),
+        onChunk: (text) => {
+          streamingRef.current += text;
+          setStreamingText(streamingRef.current);
+        },
         onDone: () => {
-          setMessages((prev) => {
-            const last = prev[prev.length - 1];
-            if (last?.role === "assistant" && streamingText) {
-              return prev;
-            }
-            return [
-              ...prev,
-              { role: "assistant" as const, content: streamingText },
-            ];
-          });
+          setMessages((prev) => [
+            ...prev,
+            { role: "assistant" as const, content: streamingRef.current },
+          ]);
           setStreamingText("");
+          streamingRef.current = "";
         },
       });
     } catch {
