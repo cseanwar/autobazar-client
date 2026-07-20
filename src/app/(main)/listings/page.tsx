@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { Suspense, useState, useCallback } from "react";
 import { useSearchParams } from "next/navigation";
 import { useItems } from "@/hooks/useItems";
 import CarGrid from "@/components/listings/CarGrid";
@@ -8,7 +8,7 @@ import SearchBar from "@/components/listings/SearchBar";
 import FilterPanel, { type Filters, defaultFilters } from "@/components/listings/FilterPanel";
 import SortDropdown from "@/components/listings/SortDropdown";
 import Pagination from "@/components/listings/Pagination";
-import { CarFront } from "lucide-react";
+import { CarFront, Loader2 } from "lucide-react";
 
 const BODY_TYPE_LABELS: Record<string, string> = {
   sedan: "Sedan",
@@ -20,7 +20,7 @@ const BODY_TYPE_LABELS: Record<string, string> = {
   truck: "Truck",
 };
 
-export default function ListingsPage() {
+function ListingsContent() {
   const searchParams = useSearchParams();
   const urlBodyType = searchParams.get("bodyType") || undefined;
   const urlFuelType = searchParams.get("fuelType") || undefined;
@@ -123,5 +123,17 @@ export default function ListingsPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function ListingsPage() {
+  return (
+    <Suspense fallback={
+      <div className="flex flex-1 items-center justify-center py-32">
+        <Loader2 className="size-8 animate-spin text-[var(--accent)]" />
+      </div>
+    }>
+      <ListingsContent />
+    </Suspense>
   );
 }
