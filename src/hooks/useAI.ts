@@ -56,6 +56,18 @@ export function useAIChat() {
         throw new Error(err.error || "Chat request failed");
       }
 
+      const contentType = res.headers.get("content-type") || "";
+
+      // Vercel buffered mode: server returns a single JSON response
+      if (contentType.includes("application/json")) {
+        const json = await res.json();
+        if (!json.success) throw new Error(json.error || "Chat request failed");
+        if (json.content) onChunk(json.content);
+        onDone();
+        return;
+      }
+
+      // Local SSE streaming mode
       const reader = res.body?.getReader();
       if (!reader) throw new Error("No response body");
 
