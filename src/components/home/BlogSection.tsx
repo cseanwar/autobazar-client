@@ -12,7 +12,7 @@ const posts = [
     slug: "used-car-buying-guide-2025",
   },
   {
-    image: "https://images.unsplash.com/photo-1619767886558-efdc7b9af047?w=600&q=80",
+    image: "https://media.istockphoto.com/id/1693201783/sv/foto/human-hands-holding-electric-plug-and-gasoline-nozzle.jpg?s=612x612&w=0&k=20&c=I86s5yLuY6H74FTQjwWlHdt1UIW-k2pHHYqr2rX2OPw=",
     title: "Electric vs. Hybrid: Which Powertrain Is Right for You?",
     excerpt:
       "A detailed comparison of electric and hybrid vehicles to help you choose the perfect powertrain for your lifestyle.",
@@ -31,7 +31,7 @@ const posts = [
 
 export default function BlogSection() {
   return (
-    <section className="border-t border-[var(--border)] bg-[var(--background)] py-20">
+    <section className="border-t border-border bg-background py-20">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex items-end justify-between">
           <div>
