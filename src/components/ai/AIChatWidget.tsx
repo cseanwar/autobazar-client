@@ -88,15 +88,21 @@ export default function AIChatWidget() {
           streamingRef.current = "";
         },
       });
-    } catch {
+    } catch (err: unknown) {
+      // Clean up any partial streaming state
+      streamingRef.current = "";
+      setStreamingText("");
+      const errorMessage =
+        err instanceof Error && err.message
+          ? err.message
+          : "Sorry, I encountered an error. Please try again.";
       setMessages((prev) => [
         ...prev,
         {
           role: "assistant",
-          content: "Sorry, I encountered an error. Please try again.",
+          content: `⚠️ ${errorMessage}`,
         },
       ]);
-      setStreamingText("");
     }
   }
 

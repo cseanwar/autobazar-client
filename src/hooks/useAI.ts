@@ -80,11 +80,17 @@ export function useAIChat() {
           }
           try {
             const parsed = JSON.parse(payload);
+            // Backend sends { error } when Groq is unavailable
+            if (parsed.error) {
+              throw new Error(parsed.error);
+            }
             if (parsed.content) {
               onChunk(parsed.content);
             }
-          } catch {
-            // skip malformed chunks
+          } catch (parseErr) {
+            // Re-throw real errors (e.g. Groq unavailable), skip JSON parse errors
+            if (parseErr instanceof SyntaxError) continue;
+            throw parseErr;
           }
         }
       }
