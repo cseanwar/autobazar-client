@@ -383,14 +383,14 @@ export default function ListingDetailPage() {
             <div className="mt-8 space-y-3">
               <button
                 type="button"
-                className="flex w-full items-center justify-center gap-2 rounded-xl bg-[var(--accent)] px-6 py-3 text-sm font-semibold text-[var(--accent-foreground)] transition-all hover:opacity-90"
+                className="flex w-full items-center justify-center gap-2 rounded-xl bg-[var(--accent)] px-6 py-3 text-sm font-semibold text-[var(--accent-foreground)] transition-all hover:opacity-90 cursor-pointer"
               >
                 <MessageSquare className="size-4" />
                 Contact Seller
               </button>
               <button
                 type="button"
-                className="flex w-full items-center justify-center gap-2 rounded-xl border border-[var(--border)] px-6 py-3 text-sm font-medium text-[var(--foreground)] transition-colors hover:bg-[var(--surface-hover)]"
+                className="flex w-full items-center justify-center gap-2 rounded-xl border border-border px-6 py-3 text-sm font-medium text-[var(--foreground)] transition-colors hover:bg-surface-hover cursor-pointer"
               >
                 <ShieldCheck className="size-4" />
                 Request Inspection
