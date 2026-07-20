@@ -114,41 +114,37 @@ autobazar/
 - npm or pnpm
 - A MongoDB instance (local or MongoDB Atlas)
 
-### 1. Clone the repository
-```bash
-git clone https://github.com/<your-username>/autobazar.git
-cd autobazar
-```
-
-### 2. Install dependencies
+### 1. Clone the repository and install dependencies
 
 **Backend**
 ```bash
-cd autobazar-backend
+git clone https://github.com/cseanwar/autobazar-server.git
+cd autobazar-server
 npm install
 ```
 
 **Frontend**
 ```bash
-cd ../autobazar-frontend
+git clone https://github.com/cseanwar/autobazar-client.git
+cd ../autobazar-client
 npm install
 ```
 
-### 3. Configure environment variables
+### 2. Configure environment variables
 
 Create a `.env` file in both `autobazar-backend/` and `autobazar-frontend/` — see [Environment Variables](#environment-variables) below.
 
-### 4. Run the development servers
+### 3. Run the development servers
 
 **Backend** (defaults to `http://localhost:5000` or your configured port)
 ```bash
-cd autobazar-backend
+cd autobazar-server
 npm run dev
 ```
 
 **Frontend** (defaults to `http://localhost:3000`)
 ```bash
-cd autobazar-frontend
+cd autobazar-client
 npm run dev
 ```
 
@@ -164,7 +160,7 @@ npm run build && npm start
 
 ## Environment Variables
 
-**Backend (`autobazar-backend/.env`)**
+**Backend (`autobazar-server/.env`)**
 ```env
 PORT=5000
 MONGODB_URI=your_mongodb_connection_string
@@ -174,10 +170,19 @@ GROQ_API_KEY=your_groq_api_key
 CLIENT_URL=http://localhost:3000
 ```
 
-**Frontend (`autobazar-frontend/.env.local`)**
+**Frontend (`autobazar-client/.env.local`)**
 ```env
-NEXT_PUBLIC_API_URL=http://localhost:5000
-NEXT_PUBLIC_BETTER_AUTH_URL=http://localhost:5000
+# Frontend
+NEXT_PUBLIC_SERVER_URL=http://localhost:5000
+BETTER_AUTH_URL=http://localhost:5000
+BETTER_AUTH_SECRET=your_auth_secret
+
+# MongoDB
+MONGODB_URI=your_mongodb_connection_string
+
+# Google OAuth
+GOOGLE_CLIENT_ID=your-client-id.apps.googleusercontent.com
+GOOGLE_CLIENT_SECRET=your-client-secret
 ```
 
 > Never commit `.env` files. Add them to `.gitignore`.
